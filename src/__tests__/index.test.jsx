@@ -115,3 +115,37 @@ describe("Route testing", () => {
     });
   });
 });
+// src/__tests__/index.test.jsx
+beforeEach(() => {
+  global.fetch = vi.fn((url) => {
+    if (url.includes('/movies')) {
+      return Promise.resolve({
+        json: () => Promise.resolve([
+          {
+            id: 1,
+            title: "Doctor Strange",
+            time: "115 minutes",
+            genres: ["Action", "Adventure", "Fantasy"],
+          },
+        ]),
+      });
+    }
+    if (url.includes('/actors')) {
+      return Promise.resolve({
+        json: () => Promise.resolve([
+          {
+            id: 1,
+            name: "Benedict Cumberbatch",
+            movies: ["Doctor Strange", "Sherlock"]
+          },
+          {
+            id: 2,
+            name: "Rachel McAdams",
+            movies: ["Doctor Strange", "The Notebook"]
+          }
+        ]),
+      });
+    }
+    return Promise.reject(new Error('Not found'));
+  });
+});
